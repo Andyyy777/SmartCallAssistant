@@ -92,11 +92,26 @@ const MainScreen = () => {
         .then(response => response.json())
         .then(data => {
             setPath(data.path);
-            setDisplayText(data.data);
             setRecordingStatus(false);
             setIsStart(true);
             stopTimer();
             setTimer(0);
+
+            fetch("http://localhost:5000/ai/process", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ path: data.path }) 
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Server response:", data);
+                setDisplayText(data.data);
+            })
+            .catch(error => {
+                console.error("Error about AI:", error);
+            });
         })
         .catch(error => {
             console.error("Error:", error);

@@ -6,7 +6,7 @@ from flask_cors import CORS
 audio_recorder = Blueprint('audio', __name__, url_prefix='/audio')
 CORS(audio_recorder, origins=["http://localhost:3000"])
 recorder = AudioRecorder()
-ai_assistant = AIAssistant()
+# ai_assistant = AIAssistant()
 
 
 @audio_recorder.route('/start', methods=['POST'])
@@ -29,9 +29,7 @@ def stop():
     path = recorder.stop_recording()
     if "Error" in path:
         return jsonify({"status": path}), 400
-    summary = ai_assistant.process(path)
-    summary = ''
-    return jsonify({"status": "Recording stopped", "path":path, "data":summary})
+    return jsonify({"status": "Recording stopped", "path":path})
 
 # @audio_recorder.route('/save', methods=['POST'])
 # def save():

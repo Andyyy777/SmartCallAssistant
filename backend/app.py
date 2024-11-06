@@ -1,11 +1,12 @@
 from api.routes.audio_recorder import audio_recorder
 from flask_cors import CORS
+from api.routes.ai_assistant import ai_assistant
 from flask import Flask, render_template
 
 app = Flask(__name__)
 CORS(app, origins=["http://localhost:3000"], methods=["GET", "POST", "OPTIONS"], supports_credentials=True)
-
 app.register_blueprint(audio_recorder)
+app.register_blueprint(ai_assistant)
 
 @app.route('/')
 def home():
