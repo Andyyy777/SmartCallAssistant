@@ -12,11 +12,13 @@ const Display: React.FC<DisplayProps> = ({ text, visibility }) => {
             multiline
             fullWidth
             minRows={4}
-            style={{ color:'white', marginTop: '10px', visibility: visibility? 'visible': 'hidden'}}
+            style={{  marginTop: '10px', visibility: visibility? 'visible': 'hidden'}}
             variant="outlined"
             InputProps={{
                 readOnly: true,
-                style: { color: 'white' }
+                style: {
+                    color: 'white',
+                },
             }}
         />
     );
