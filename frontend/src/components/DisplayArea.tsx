@@ -16,6 +16,7 @@ const Display: React.FC<DisplayProps> = ({ text, visibility }) => {
             variant="outlined"
             InputProps={{
                 readOnly: true,
+                style: { color: 'white' }
             }}
         />
     );

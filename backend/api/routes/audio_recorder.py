@@ -4,13 +4,13 @@ from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 
 audio_recorder = Blueprint('audio', __name__, url_prefix='/audio')
-CORS(audio_recorder, origins=["http://localhost:3000"])
 recorder = AudioRecorder()
 # ai_assistant = AIAssistant()
 
 
 @audio_recorder.route('/start', methods=['POST'])
 def start():
+    print("Starting recording")
     recorder.start_recording()
     return jsonify({"status": "Recording started"})
 

@@ -3,7 +3,6 @@ from flask import Blueprint, jsonify, request
 from flask_cors import CORS
 
 ai_assistant = Blueprint('ai', __name__, url_prefix='/ai')
-CORS(ai_assistant, origins=["http://localhost:3000"])
 ai = AIAssistant()
 
 @ai_assistant.route('/process', methods=['POST', 'OPTIONS'])

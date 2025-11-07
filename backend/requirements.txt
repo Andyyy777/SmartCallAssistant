@@ -1,0 +1,16 @@
+# Flask web framework and CORS support
+Flask==3.0.0
+Flask-CORS==4.0.0
+
+# OpenAI API client for Whisper and GPT models
+openai==1.51.2
+
+# Audio processing libraries
+sounddevice==0.4.6
+scipy==1.11.4
+numpy==1.26.2
+wave
+
+# File and path handling
+pathlib2==2.3.7
+

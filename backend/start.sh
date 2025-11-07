@@ -2,6 +2,7 @@
 export FLASK_APP=app.py
 export FLASK_ENV=development
 
-$env:OPENAI_API_KEY ='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'
+export OPENAI_API_KEY='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'
 # Start the Flask server
-flask run
+# flask run
+python app.py

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography, CircularProgress } from '@mui/material';
 import DisplayArea from '../components/DisplayArea';
 
 const MainScreen = () => {
@@ -9,6 +9,7 @@ const MainScreen = () => {
     const [timer, setTimer] = useState(0);
     const [intervalId, setIntervalId] = useState<number | NodeJS.Timeout | undefined>(undefined);
     const [displayText, setDisplayText] = useState('')
+    const [aiLoading, setAiLoading] = useState(false);
 
     const startTimer = () => {
         const id = setInterval(() => {
@@ -25,7 +26,7 @@ const MainScreen = () => {
     const toggleRecording = () => {
         if (isStart && !recordingStatus) {
             // Start recording
-            fetch("http://localhost:5000/audio/start", {
+            fetch("http://localhost:5001/audio/start", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -47,7 +48,7 @@ const MainScreen = () => {
             });
         } else if (!isStart && recordingStatus) {
             // Pause recording
-            fetch("http://localhost:5000/audio/pause", {
+            fetch("http://localhost:5001/audio/pause", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -64,7 +65,7 @@ const MainScreen = () => {
             });
         } else if (!isStart && !recordingStatus) {
             // Resume recording
-            fetch("http://localhost:5000/audio/resume", {
+            fetch("http://localhost:5001/audio/resume", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -83,7 +84,7 @@ const MainScreen = () => {
     };
 
     const stopRecording = () => {
-        fetch("http://localhost:5000/audio/stop", {
+        fetch("http://localhost:5001/audio/stop", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -97,7 +98,9 @@ const MainScreen = () => {
             stopTimer();
             setTimer(0);
 
-            fetch("http://localhost:5000/ai/process", {
+            setAiLoading(true);
+
+            fetch("http://localhost:5001/ai/process", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -111,7 +114,8 @@ const MainScreen = () => {
             })
             .catch(error => {
                 console.error("Error about AI:", error);
-            });
+            })
+            .finally(() => setAiLoading(false));
         })
         .catch(error => {
             console.error("Error:", error);
@@ -126,6 +130,8 @@ const MainScreen = () => {
     useEffect(() => {
         return () => clearInterval(intervalId);
     }, [intervalId]);
+
+    const buttonsDisabled = aiLoading;
 
     return (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -153,6 +159,12 @@ const MainScreen = () => {
             <Typography variant="body1" style={{ marginTop: '10px', visibility: isStart&&!recordingStatus&&timer==0? "visible" : "hidden"}}>
                 {path}
             </Typography>
+            {aiLoading && (
+                <div style={{ marginTop: 16, display: 'flex', justifyContent: 'center', gap: 8, alignItems: 'center' }}>
+                <CircularProgress size={24} />
+                <Typography variant="body2">AI assistant is processing…</Typography>
+                </div>
+            )}
             <DisplayArea text={displayText} visibility={isStart&&!recordingStatus&&timer==0} />
         </div>
     );
